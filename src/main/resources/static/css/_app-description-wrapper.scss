@@ -1,0 +1,12 @@
+@use 'mixins';
+
+div#app-description {
+    min-height: 25vh;
+}
+
+div#app-description-wrapper {
+    @include mixins.gray-2px-border;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+}

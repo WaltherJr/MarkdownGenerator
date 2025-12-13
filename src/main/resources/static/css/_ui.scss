@@ -1,0 +1,59 @@
+@use 'mixins';
+@use 'sass:color';
+@use 'ui/flexbox';
+@use 'ui/grid';
+@use 'ui/buttons';
+
+.toolbar, .toolbar ul {
+    @include mixins.inline-flex-list;
+    gap: 4px;
+}
+
+.toolbar button {
+    padding: 10px 12px;
+    font-size: 15px;
+    background-color: seagreen;
+    border-color: color.adjust(seagreen, $whiteness: 80%);
+}
+
+.edit-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: gainsboro
+}
+
+#toolbar-2 {
+    padding: 10px;
+    background-color: rgba(0,0,0,.4);
+    width: 100%;
+    box-sizing: border-box;
+}
+#toolbar-2 > ul {
+    margin-left: 10px;
+}
+
+.floating-toolbar {
+    @include mixins.inline-flex-list;
+    padding: 10px 20px;
+    background-color: goldenrod;
+    position: fixed;
+}
+
+.has-floating-toolbar {
+    position: relative;
+    overflow: visible !important;
+
+    &.is-hovered::after {
+        content: '';
+        display: block;
+        background-color: transparent;
+        position: absolute;
+        left: -10px;
+        top: 10px;
+        width: calc(100% + 2*10px);
+        height: calc(100% + 2*10px);
+        border: 5px solid red;
+    }
+}

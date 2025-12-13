@@ -1,0 +1,27 @@
+
+$number-mappings: (
+  1: first,
+  2: second,
+  3: third,
+  4: fourth
+);
+
+$number-mappings-2: (
+  1: one,
+  2: two,
+  3: three,
+  4: four
+);
+
+@mixin gray-2px-border {
+    border: 2px solid gainsboro;
+}
+
+@mixin inline-flex-list {
+    margin: 0; padding: 0;
+    display: inline-flex;
+
+    & > * {
+        flex: 1;
+    }
+}

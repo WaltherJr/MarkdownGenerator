@@ -1,0 +1,20 @@
+@use 'sass:map';
+@use '../mixins';
+
+$flexbox-gaps: 7, 10, 15;
+
+.flexbox {
+    display: flex;
+}
+
+@each $i in map.keys(mixins.$number-mappings) {
+    .flexbox.#{map.get(mixins.$number-mappings, $i)}-item-fixed > *:not(:nth-child(#{$i})) {
+        flex: 1;
+    }
+}
+
+@each $flexbox-gap in $flexbox-gaps {
+    .flexgap-#{$flexbox-gap} {
+        gap: #{flexbox-gap}px;
+    }
+}

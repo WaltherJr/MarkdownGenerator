@@ -1,0 +1,253 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+fieldset {
+  gap: 16px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+input[type=url], input[type=text], textarea {
+  border: 2px solid gainsboro;
+}
+
+input, div#app-description, div {
+  padding: 10px;
+}
+
+fieldset > label {
+  text-align: right;
+}
+
+input, button, div#app-description-wrapper, div#generated-markdown, fieldset {
+  border-radius: 7px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.flexbox {
+  display: flex;
+}
+
+.flexbox.first-item-fixed > *:not(:nth-child(1)) {
+  flex: 1;
+}
+
+.flexbox.second-item-fixed > *:not(:nth-child(2)) {
+  flex: 1;
+}
+
+.flexbox.third-item-fixed > *:not(:nth-child(3)) {
+  flex: 1;
+}
+
+.flexbox.fourth-item-fixed > *:not(:nth-child(4)) {
+  flex: 1;
+}
+
+.flexgap-7 {
+  gap: flexbox-gappx;
+}
+
+.flexgap-10 {
+  gap: flexbox-gappx;
+}
+
+.flexgap-15 {
+  gap: flexbox-gappx;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid.one-columns {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.one-column-span {
+  grid-column: 2;
+  grid-row: span 2;
+}
+
+.grid.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.two-column-span {
+  grid-column: 2;
+  grid-row: span 2;
+}
+
+.grid.three-columns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.three-column-span {
+  grid-column: 2;
+  grid-row: span 2;
+}
+
+.grid.four-columns {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.four-column-span {
+  grid-column: 2;
+  grid-row: span 2;
+}
+
+button.btn-size-small {
+  padding: 7px 15px;
+  font-size: 12px;
+}
+
+button.btn-size-medium {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+button.btn-size-large {
+  padding: 20px 30px;
+  font-size: 20px;
+}
+
+button {
+  background-color: yellowgreen;
+  font-size: 107%;
+  border: 2px solid gainsboro;
+  box-shadow: 0 2px rgba(0, 0, 0, 0.3);
+  transition: top 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+}
+
+button:active {
+  background-color: seagreen;
+  position: relative;
+  top: 2px;
+  box-shadow: none;
+}
+
+.toolbar, .toolbar ul {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+}
+.toolbar > *, .toolbar ul > * {
+  flex: 1;
+}
+.toolbar, .toolbar ul {
+  gap: 4px;
+}
+
+.toolbar button {
+  padding: 10px 12px;
+  font-size: 15px;
+  background-color: seagreen;
+  border-color: rgb(174.1803278689, 174.1803278689, 174.1803278689);
+}
+
+.edit-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: gainsboro;
+}
+
+#toolbar-2 {
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#toolbar-2 > ul {
+  margin-left: 10px;
+}
+
+.floating-toolbar {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+}
+.floating-toolbar > * {
+  flex: 1;
+}
+.floating-toolbar {
+  padding: 10px 20px;
+  background-color: goldenrod;
+  position: fixed;
+}
+
+.has-floating-toolbar {
+  position: relative;
+  overflow: visible !important;
+}
+.has-floating-toolbar.is-hovered::after {
+  content: "";
+  display: block;
+  background-color: transparent;
+  position: absolute;
+  left: -10px;
+  top: 10px;
+  width: calc(100% + 20px);
+  height: calc(100% + 20px);
+  border: 5px solid red;
+}
+
+@keyframes flashOutline {
+  0%, 100% {
+    outline-color: transparent; /* Invisible at start and end */
+  }
+  50% {
+    outline-color: red; /* Visible in the middle */
+  }
+}
+.update-animation {
+  outline: 3px solid transparent; /* Set initial outline width */
+  animation: flashOutline 0.3s ease-in-out 1; /* Quick flash */
+}
+
+div#app-description {
+  min-height: 25vh;
+}
+
+div#app-description-wrapper {
+  border: 2px solid gainsboro;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+div#generated-markdown {
+  padding: 30px;
+  background-color: gainsboro;
+  margin-top: 20px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+}
+
+.not-visible {
+  display: none;
+}
+
+div#generated-markdown:empty {
+  display: none;
+}
+
+.is-editing {
+  outline: 2px solid blue;
+}

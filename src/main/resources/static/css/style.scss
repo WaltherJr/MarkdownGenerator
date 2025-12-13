@@ -1,0 +1,17 @@
+@use 'base';
+@use 'ui';
+@use 'animations';
+@use 'app-description-wrapper';
+@use 'generated-markdown';
+
+.not-visible {
+    display: none;
+}
+
+div#generated-markdown:empty {
+    display: none;
+}
+
+.is-editing {
+    outline: 2px solid blue;
+}

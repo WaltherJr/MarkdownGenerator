@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html th:lang="${#strings.replace(#locale.toString(), '_', '-')}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MarkdownGenerator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=' + ${@thymeleafHelper.getAppIconsList()}" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script th:src="@{/js/main.js}"></script>
+</head>
+<body>
+    <ul id="first-floating-toolbar" class="toolbar floating-toolbar not-visible">
+        <li th:each="moveElementIcon: ${panels.moveElementPanel.panelIcons}"><button><span class="material-symbols-outlined" th:text="${moveElementIcon.name}"></span></button></li>
+    </ul>
+    <ul id="second-floating-toolbar" class="toolbar floating-toolbar not-visible"></ul>
+
+    <fieldset class="grid two-columns">
+        <label for="inspect-github-user-project">GitHub user to inspect:</label>
+        <div class="flexbox second-item-fixed flexgap-10">
+            <input id="github-user" name="github-user" placeholder="WaltherJr" type="text">
+            <button id="fetch-github-user-repos" class="btn-size-medium">Fetch user repos</button>
+        </div>
+        <select id="github-user-repos" class="two-column-span"></select>
+        <button id="inspect-github-user-project" class="btn-size-medium two-column-span">Inspect GitHub project</button>
+    </fieldset>
+    <fieldset class="grid two-columns">
+        <label for="app-name">Application name:</label><input id="app-name" name="app-name" type="text">
+        <label for="app-description">Application description:</label>
+        <div id="app-description-wrapper">
+            <ul id="toolbar-2" class="toolbar">
+                <ul th:each="toolbarSubPanel : ${T(com.eriksandsten.markdowngenerator.ui.MainToolbar).getToolbarLayout()}">
+                    <li th:each="toolbarButton : ${toolbarSubPanel}">
+                        <button th:class="|material-symbols-outlined action-${toolbarButton.className}|" th:classappend="*{toolbarButton.canBeToggled() ? 'can-be-toggled' : ''}"
+                                th:data-tag-name="*{toolbarButton.htmlTagName}" th:text="${toolbarButton.caption}" th:title="#{${toolbarButton.caption}}"></button>
+                    </li>
+                </ul>
+            </ul>
+            <div id="app-description" name="app-description" contenteditable="true">
+                <p>Hello world!</p>
+                <p contenteditable="true">Another paragraph...</p>
+                <blockquote>This is a blockquote</blockquote>
+                <a target="_blank" href="https://en.wikipedia.org/wiki/CSS" contenteditable="true">CSS</a>
+            </div>
+            <div id="anchor-element-edit-panel" class="edit-panel">
+                <label th:with="panelIcon = ${panels.linkPanel.panelIcons[0]}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input id="link-title" type="text"></label>
+                <label th:with="panelIcon = ${panels.linkPanel.panelIcons[1]}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input id="link-url" type="text"></label>
+            </div>
+        </div>
+
+        <label for="markdown-footer">Markdown footer:</label>
+        <input id="markdown-footer" name="markdown-footer" type="text" th:placeholder="${defaultMarkdownFooterText}">
+        <button id="generate-markdown" class="btn-size-large two-column-span">Generate markdown</button>
+    </fieldset>
+    <div id="generated-markdown"></div>
+</body>

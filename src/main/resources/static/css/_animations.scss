@@ -1,0 +1,13 @@
+
+@keyframes flashOutline {
+  0%, 100% {
+    outline-color: transparent; /* Invisible at start and end */
+  }
+  50% {
+    outline-color: red; /* Visible in the middle */
+  }
+}
+.update-animation {
+outline: 3px solid transparent; /* Set initial outline width */
+animation: flashOutline 0.3s ease-in-out 1; /* Quick flash */
+}

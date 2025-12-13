@@ -1,0 +1,17 @@
+@use 'sass:map';
+@use '../mixins';
+
+.grid {
+    display: grid;
+}
+
+@each $i in map.keys(mixins.$number-mappings) {
+    .grid.#{map.get(mixins.$number-mappings-2, $i)}-columns {
+        grid-template-columns: repeat($i, 1fr);
+    }
+
+    .#{map.get(mixins.$number-mappings-2, $i)}-column-span {
+        grid-column: 2;
+        grid-row: span 2;
+    }
+}
