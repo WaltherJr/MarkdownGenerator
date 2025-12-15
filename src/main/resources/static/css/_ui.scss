@@ -1,5 +1,5 @@
-@use 'mixins';
 @use 'sass:color';
+@use 'mixins';
 @use 'ui/flexbox';
 @use 'ui/grid';
 @use 'ui/buttons';
@@ -10,8 +10,8 @@
 }
 
 .toolbar button {
-    padding: 10px 12px;
-    font-size: 15px;
+    padding: 7px 12px;
+    font-size: 18px;
     background-color: seagreen;
     border-color: color.adjust(seagreen, $whiteness: 80%);
 }
@@ -26,11 +26,12 @@
 }
 
 #toolbar-2 {
+    @include mixins.gray-gradient-background;
     padding: 10px;
-    background-color: rgba(0,0,0,.4);
     width: 100%;
     box-sizing: border-box;
 }
+
 #toolbar-2 > ul {
     margin-left: 10px;
 }

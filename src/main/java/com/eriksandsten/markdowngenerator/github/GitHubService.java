@@ -21,10 +21,14 @@ public class GitHubService {
     }
 
     public List<GitHubRepository> getUserGithubRepositories(String userName) {
-        List<GitHubRepository> userRepos = webClientService.getExternalData("https://api.github.com/users/%s/repos".formatted(userName),
-                new ParameterizedTypeReference<List<GitHubRepository>>(){}).block();
+        try {
+            return webClientService.getExternalData("https://api.github.com/users/%s/repos".formatted(userName),
+                    new ParameterizedTypeReference<List<GitHubRepository>>() {
+                    }).block();
 
-        return userRepos;
+        } catch (RuntimeException e) {
+            throw e;
+        }
     }
 
     public void fetchGithubRepoZipFile(String repositoryFullName, String defaultBranchName) {

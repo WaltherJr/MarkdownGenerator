@@ -2,11 +2,21 @@
 
 div#app-description {
     min-height: 25vh;
+    font-size: 20px;
+
+    & > * {
+        position: relative;
+        top: 0;
+        transition: top 1s ease;
+    }
+
+img {
+        cursor: pointer;
+    }
 }
 
 div#app-description-wrapper {
     @include mixins.gray-2px-border;
     position: relative;
     padding: 0;
-    overflow: hidden;
 }

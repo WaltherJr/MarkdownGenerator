@@ -6,6 +6,8 @@ html, body {
 body {
   margin: 20px auto;
   max-width: 1200px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 
 fieldset {
@@ -16,8 +18,20 @@ ul {
   list-style-type: none;
 }
 
+img {
+  display: inline-block;
+}
+
+div#app-description ul {
+  list-style-type: initial;
+}
+
 input[type=url], input[type=text], textarea, select {
   border: 2px solid gainsboro;
+}
+
+select {
+  font-size: inherit;
 }
 
 input, div#app-description, div, select {
@@ -72,6 +86,16 @@ input, button, div#app-description-wrapper, div#generated-markdown, fieldset, se
   flex: 2;
 }
 .columns-ratio-2-1 > *:nth-child(2) {
+  flex: 1;
+}
+
+.columns-ratio-1-1-1 > *:nth-child(1) {
+  flex: 1;
+}
+.columns-ratio-1-1-1 > *:nth-child(2) {
+  flex: 1;
+}
+.columns-ratio-1-1-1 > *:nth-child(3) {
   flex: 1;
 }
 
@@ -165,8 +189,8 @@ button[disabled] {
 }
 
 .toolbar button {
-  padding: 10px 12px;
-  font-size: 15px;
+  padding: 7px 12px;
+  font-size: 18px;
   background-color: seagreen;
   border-color: rgb(174.1803278689, 174.1803278689, 174.1803278689);
 }
@@ -181,8 +205,8 @@ button[disabled] {
 }
 
 #toolbar-2 {
+  background-image: linear-gradient(to bottom, lightgray, darkgray);
   padding: 10px;
-  background-color: rgba(0, 0, 0, 0.4);
   width: 100%;
   box-sizing: border-box;
 }
@@ -236,13 +260,21 @@ button[disabled] {
 
 div#app-description {
   min-height: 25vh;
+  font-size: 20px;
+}
+div#app-description > * {
+  position: relative;
+  top: 0;
+  transition: top 1s ease;
+}
+div#app-description img {
+  cursor: pointer;
 }
 
 div#app-description-wrapper {
   border: 2px solid gainsboro;
   position: relative;
   padding: 0;
-  overflow: hidden;
 }
 
 div#generated-markdown {
@@ -262,4 +294,16 @@ div#generated-markdown:empty {
 
 .is-editing {
   outline: 2px solid blue;
+}
+
+#bottom-panel {
+  background-image: linear-gradient(to bottom, lightgray, darkgray);
+  width: calc(100% - 60px);
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  position: relative;
+  left: 45px;
+  box-sizing: border-box;
+  font-size: 13px;
+  text-align: right;
 }

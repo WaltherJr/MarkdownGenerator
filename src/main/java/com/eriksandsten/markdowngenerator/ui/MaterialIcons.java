@@ -11,9 +11,10 @@ public final class MaterialIcons {
                 Stream.of(
                         MainToolbar.getToolbarLayout().stream().flatMap(List::stream).map(MainToolbar.ToolbarButton::getCaption),
                         LinkPanel.uiIcons.stream().map(Icon::name),
+                        ImagePanel.uiIcons.stream().map(Icon::name),
                         MoveElementPanel.uiIcons.stream().map(Icon::name))
                         .flatMap(Function.identity());
 
-        return combined.sorted().collect(Collectors.joining(","));
+        return combined.distinct().sorted().collect(Collectors.joining(","));
     }
 }

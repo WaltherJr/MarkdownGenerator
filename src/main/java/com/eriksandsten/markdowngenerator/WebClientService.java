@@ -3,9 +3,11 @@ package com.eriksandsten.markdowngenerator;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +21,7 @@ public class WebClientService<T> {
                 .build()
                 .get()
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,response -> Mono.error(new RuntimeException("Client error: " + response.statusCode())))
                 .bodyToMono(responseType);
     }
 

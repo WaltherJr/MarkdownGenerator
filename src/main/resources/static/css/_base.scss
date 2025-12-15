@@ -8,6 +8,8 @@ html, body {
 body {
     margin: 20px auto;
     max-width: 1200px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
 }
 
 fieldset {
@@ -18,8 +20,20 @@ ul {
     list-style-type: none;
 }
 
+img {
+    display: inline-block; // Needs to have the inline-block value, else will shrink if setting image src to non-existing image
+}
+
+div#app-description ul {
+    list-style-type: initial;
+}
+
 input[type="url"], input[type="text"], textarea, select {
     @include mixins.gray-2px-border;
+}
+
+select {
+    font-size: inherit;
 }
 
 input, div#app-description, div, select {

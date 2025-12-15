@@ -1,4 +1,4 @@
 package com.eriksandsten.markdowngenerator.ui;
 
-public record Icon(String name, String title) {
+public record Icon(String name, String title, String bindingAttribute) {
 }

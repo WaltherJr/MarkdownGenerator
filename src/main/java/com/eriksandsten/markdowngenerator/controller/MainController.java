@@ -8,6 +8,7 @@ import com.eriksandsten.markdowngenerator.detectors.FileTypeDetector;
 import com.eriksandsten.markdowngenerator.detectors.JQueryDetector;
 import com.eriksandsten.markdowngenerator.github.GitHubService;
 import com.eriksandsten.markdowngenerator.ui.LinkPanel;
+import com.eriksandsten.markdowngenerator.ui.ImagePanel;
 import com.eriksandsten.markdowngenerator.ui.MoveElementPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,6 +55,7 @@ public class MainController {
         boolean hasJavaScriptDependency = FileTypeDetector.hasDependency("src", ".js"); // TODO: Search for <script> tags in HTML as well (and other file endings)
         boolean hasCAndCppDependency = FileTypeDetector.hasDependency("src", List.of(".c", ".cpp", ".h")); // TODO: Search for <script> tags in HTML as well
         boolean hasSassDependency = FileTypeDetector.hasDependency("src", ".scss");
+        boolean hasPythonDependency = FileTypeDetector.hasDependency("src", List.of(".py", ".pyw"));
         boolean hasCSSDependency = hasSassDependency || FileTypeDetector.hasDependency("src", ".css");
         boolean hasHTMLDependency = hasThymeleafDependency || FileTypeDetector.hasDependency("src", ".html");
         boolean hasGradleDependency = FileDetector.fileExists("build.gradle");
@@ -70,6 +72,7 @@ public class MainController {
         model.addAttribute("s", s);
         model.addAttribute("panels", Map.of(
                 "linkPanel", Map.of("panelIcons", LinkPanel.uiIcons),
+                "imgPanel", Map.of("panelIcons", ImagePanel.uiIcons),
                 "moveElementPanel", Map.of("panelIcons", MoveElementPanel.uiIcons))
         );
 

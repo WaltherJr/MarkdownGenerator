@@ -1,5 +1,6 @@
 @use 'base';
 @use 'ui';
+@use 'mixins';
 @use 'animations';
 @use 'app-description-wrapper';
 @use 'generated-markdown';
@@ -14,4 +15,16 @@ div#generated-markdown:empty {
 
 .is-editing {
     outline: 2px solid blue;
+}
+
+#bottom-panel {
+    @include mixins.gray-gradient-background;
+    width: calc(100% - 60px);
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    position: relative;
+    left: 45px;
+    box-sizing: border-box;
+    font-size: 13px;
+    text-align: right;
 }

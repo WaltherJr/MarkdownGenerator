@@ -13,6 +13,10 @@ $number-mappings-2: (
   4: four
 );
 
+@mixin gray-gradient-background {
+    background-image: linear-gradient(to bottom, lightgray, darkgray);
+}
+
 @mixin gray-2px-border {
     border: 2px solid gainsboro;
 }
