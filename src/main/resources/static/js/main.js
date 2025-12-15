@@ -84,14 +84,17 @@ function addDragEvents() {
             if (!finalUsername) {
                 alert('No GitHub username set!');
             } else {
+                $('button#inspect-github-user-project').prop('disabled', true);
+                const githubReposSelectList = $('#github-user-repos').html('');
+
                 fetchData(`/github-repos?username=${encodeURIComponent(githubUsername ? githubUsername : githubUsernamePlaceholder)}`, 'json').then(json => {
                     console.log(json);
-                    const githubReposSelectList = $('#github-user-repos').html('');
                     json.map(repo => {
                         const serializedRepositoryData = JSON.stringify({full_name: repo.full_name, default_branch: repo.default_branch});
                         return `<option value="${escapeHtmlAttr(serializedRepositoryData)}" data-html-url="${repo.html_url}" data-default-branch="${repo.default_branch}">${repo.name}</option>`;
-
                     }).forEach(option => githubReposSelectList.append(option));
+
+                    $('button#inspect-github-user-project').prop('disabled', false);
                 });
             }
         });
@@ -145,6 +148,13 @@ function uneditElement(element) {
     }
 }
 
+function showElement(element) {
+    element.removeClass('not-displayed');
+}
+function hideElement(element) {
+    element.addClass('not-displayed');
+}
+
 $(document).ready(function() {
     $('button#generate-markdown').on('click', function() {
         const markdownHtml = generateMarkdown();
@@ -161,7 +171,7 @@ $(document).ready(function() {
     observer.observe(document.getElementById('app-description'), { childList: true, characterData: true, subtree: true });
 
     // TODO: Simplify "if (currentElement == stopElement || currentElement == document)"
-    function closestWithStop(stopElement, currentElement, tagNameToLookFor, matchingElement) {
+    function findAncestorElement(stopElement, currentElement, tagNameToLookFor, matchingElement) {
          if (currentElement == stopElement) {
             console.log('[moveUpwardsInTheDOM] currentElement is the stop element!');
             return matchingElement;
@@ -173,7 +183,7 @@ $(document).ready(function() {
                 matchingElement = currentElement;
             }
 
-            return closestWithStop(stopElement, currentElement.parentElement, tagNameToLookFor, matchingElement);
+            return findAncestorElement(stopElement, currentElement.parentElement, tagNameToLookFor, matchingElement);
         }
     }
 
@@ -185,7 +195,7 @@ $(document).ready(function() {
             const surroundingElementLookedFor = button.attr('data-tag-name');
 
             if (surroundingElementLookedFor) {
-                const surroundedByRequestedElement = closestWithStop($('div#app-description-wrapper')[0], selection.baseNode, surroundingElementLookedFor, null);
+                const surroundedByRequestedElement = findAncestorElement($('div#app-description-wrapper')[0], selection.baseNode, surroundingElementLookedFor, null);
 
                 if (surroundedByRequestedElement) {
                     console.log("Requested element for tagName " + surroundingElementLookedFor + ": ", surroundedByRequestedElement);
@@ -245,10 +255,12 @@ $(document).ready(function() {
             $('input#link-title').val($(anchorNodeParentElement).attr('title'));
             $('input#link-url').val($(anchorNodeParentElement).attr('href'));
             setStoredSelectedElement(anchorNodeParentElement);
+            showElement($('#anchor-element-edit-panel'));
 
         } else if (isWithinContentEditableArea) {
             $('input#link-title, input#link-url').val('');
             setStoredSelectedElement(null);
+            hideElement($('#anchor-element-edit-panel'));
         }
     }).on('focus', 'input#link-title, input#link-url', function() {
         const selectedElement = getStoredSelectedElement();

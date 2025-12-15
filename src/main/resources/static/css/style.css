@@ -16,11 +16,11 @@ ul {
   list-style-type: none;
 }
 
-input[type=url], input[type=text], textarea {
+input[type=url], input[type=text], textarea, select {
   border: 2px solid gainsboro;
 }
 
-input, div#app-description, div {
+input, div#app-description, div, select {
   padding: 10px;
 }
 
@@ -28,7 +28,7 @@ fieldset > label {
   text-align: right;
 }
 
-input, button, div#app-description-wrapper, div#generated-markdown, fieldset {
+input, button, div#app-description-wrapper, div#generated-markdown, fieldset, select {
   border-radius: 7px;
 }
 
@@ -66,6 +66,13 @@ input, button, div#app-description-wrapper, div#generated-markdown, fieldset {
 
 .flexgap-15 {
   gap: flexbox-gappx;
+}
+
+.columns-ratio-2-1 > *:nth-child(1) {
+  flex: 2;
+}
+.columns-ratio-2-1 > *:nth-child(2) {
+  flex: 1;
 }
 
 .grid {
@@ -141,6 +148,10 @@ button:active {
   box-shadow: none;
 }
 
+button[disabled] {
+  filter: grayscale(1);
+}
+
 .toolbar, .toolbar ul {
   margin: 0;
   padding: 0;
@@ -165,6 +176,7 @@ button:active {
   bottom: 0;
   left: 0;
   width: 100%;
+  box-sizing: border-box;
   background-color: gainsboro;
 }
 
@@ -240,7 +252,7 @@ div#generated-markdown {
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
 }
 
-.not-visible {
+.not-displayed {
   display: none;
 }
 

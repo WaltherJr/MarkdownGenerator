@@ -18,11 +18,11 @@ ul {
     list-style-type: none;
 }
 
-input[type="url"], input[type="text"], textarea {
+input[type="url"], input[type="text"], textarea, select {
     @include mixins.gray-2px-border;
 }
 
-input, div#app-description, div {
+input, div#app-description, div, select {
     padding: 10px;
 }
 
@@ -30,7 +30,7 @@ fieldset > label {
     text-align: right;
 }
 
-input, button, div#app-description-wrapper, div#generated-markdown, fieldset {
+input, button, div#app-description-wrapper, div#generated-markdown, fieldset, select {
     border-radius: 7px;
 }
 

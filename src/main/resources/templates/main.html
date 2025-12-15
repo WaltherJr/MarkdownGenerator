@@ -17,13 +17,16 @@
     <ul id="second-floating-toolbar" class="toolbar floating-toolbar not-visible"></ul>
 
     <fieldset class="grid two-columns">
-        <label for="inspect-github-user-project">GitHub user to inspect:</label>
-        <div class="flexbox second-item-fixed flexgap-10">
+        <label for="inspect-github-user-project">GitHub user:</label>
+        <div class="flexbox columns-ratio-2-1 flexgap-10">
             <input id="github-user" name="github-user" placeholder="WaltherJr" type="text">
             <button id="fetch-github-user-repos" class="btn-size-medium">Fetch user repos</button>
         </div>
-        <select id="github-user-repos" class="two-column-span"></select>
-        <button id="inspect-github-user-project" class="btn-size-medium two-column-span">Inspect GitHub project</button>
+        <label for="inspect-github-user-project">GitHub projects to inspect:</label>
+        <div class="flexbox columns-ratio-2-1 flexgap-10">
+            <select id="github-user-repos" class="two-column-span"></select>
+            <button id="inspect-github-user-project" class="btn-size-medium two-column-span" disabled>Inspect GitHub project</button>
+        </div>
     </fieldset>
     <fieldset class="grid two-columns">
         <label for="app-name">Application name:</label><input id="app-name" name="app-name" type="text">
@@ -43,7 +46,7 @@
                 <blockquote>This is a blockquote</blockquote>
                 <a target="_blank" href="https://en.wikipedia.org/wiki/CSS" contenteditable="true">CSS</a>
             </div>
-            <div id="anchor-element-edit-panel" class="edit-panel">
+            <div id="anchor-element-edit-panel" class="edit-panel not-displayed">
                 <label th:with="panelIcon = ${panels.linkPanel.panelIcons[0]}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input id="link-title" type="text"></label>
                 <label th:with="panelIcon = ${panels.linkPanel.panelIcons[1]}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input id="link-url" type="text"></label>
             </div>

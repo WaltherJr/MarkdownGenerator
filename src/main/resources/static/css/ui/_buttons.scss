@@ -39,3 +39,7 @@ button:active {
     top: 2px;
     box-shadow: none;
 }
+
+button[disabled] {
+    filter: grayscale(1);
+}
