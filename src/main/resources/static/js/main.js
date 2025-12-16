@@ -1,9 +1,18 @@
 import * as utils from './utils.js';
 import * as drag from './drag.js';
 import * as i18n from './i18n.js';
+import { SelectList } from './select-list.js';
+import { EditPanel } from './panels/edit-panel.js';
+import { ImageEditPanel } from './panels/image-edit-panel.js';
+import { AnchorEditPanel } from './panels/anchor-edit-panel.js';
+import { ListEditPanel } from './panels/list-edit-panel.js';
+import { UnorderedListEditPanel } from './panels/unordered-list-edit-panel.js';
+import { OrderedListEditPanel } from './panels/ordered-list-edit-panel.js';
+import { TableEditPanel } from './panels/table-edit-panel.js';
 
 const headingsSelector = [1,2,3,4,5,6].map(i => `.action-format-h${i}`).join(', ')
 const appDescriptionImmediateChildrenSelector = 'div#app-description > *';
+document.selectLists = new SelectList();
 
 function generateMarkdown() {
     const appTitle = $('#app-name').val()
@@ -46,6 +55,17 @@ function fetchAllDocumentTranslations(forLanguageTag) {
 }
 
 $(document).ready(function() {
+    const $document = $(document);
+    document.editPanels = {
+        img: new ImageEditPanel($('#img-element-edit-panel'), $document),
+        a: new AnchorEditPanel($('#a-element-edit-panel'), $document),
+        ul: new UnorderedListEditPanel($('#ul-element-edit-panel'), $document),
+        ol: new OrderedListEditPanel($('#ol-element-edit-panel'), $document),
+        table: new TableEditPanel($('table-element-edit-panel'), $document)
+    };
+
+    // document.editPanels = Object.fromEntries(['a', 'img', 'ul', 'ol'].flatMap(elementName => [[elementName, new EditPanel($(`#${elementName}-element-edit-panel`))]]));
+
     $('button#generate-markdown').on('click', function() {
         const markdownHtml = generateMarkdown();
         const generatedMarkdown = marked.parse(markdownHtml);
@@ -59,21 +79,23 @@ $(document).ready(function() {
     drag.addDragEvents(appDescriptionImmediateChildrenSelector);
     observer.observe(document.getElementById('app-description'), { childList: true, characterData: true, subtree: true });
 
-    // TODO: Simplify "if (currentElement == stopElement || currentElement == document)"
-    function findAncestorElement(stopElement, currentElement, tagNameToLookFor, matchingElement) {
-         if (currentElement == stopElement) {
-            console.log('[moveUpwardsInTheDOM] currentElement is the stop element!');
-            return matchingElement;
-         } else if (currentElement == document) {
-            console.log('[moveUpwardsInTheDOM] currentElement is document element!');
-            return matchingElement;
-        } else {
-            if (currentElement && currentElement.tagName && currentElement.tagName.toLowerCase() === tagNameToLookFor) {
-                matchingElement = currentElement;
-            }
+    function handleDocumentSelectionChangeEvent(event) {
+        const selection = document.getSelection();
+        const selectionRange = selection.getRangeAt(0);
+        const isWithinContentEditableArea = $(selection.anchorNode).closest('div#app-description').length > 0;
+        // const activeElement = document.activeElement;
 
-            return findAncestorElement(stopElement, currentElement.parentElement, tagNameToLookFor, matchingElement);
+        console.log('WITHIN AREA: ', isWithinContentEditableArea);
+        setToolbarActiveButtons($('ul#toolbar-2 button'), selection, selectionRange);
+
+        if (isWithinContentEditableArea) {
+        utils.setStoredSelectedElement(selection.anchorNode);
         }
+
+        //console.log(selection);
+        //console.log(selectionRange);
+
+        const anchorNodeParentElement = selection.anchorNode.parentElement;
     }
 
     function setToolbarActiveButtons(toolbarButtons, selection, selectionRange) {
@@ -84,7 +106,7 @@ $(document).ready(function() {
             const surroundingElementLookedFor = button.attr('data-tag-name');
 
             if (surroundingElementLookedFor) {
-                const surroundedByRequestedElement = findAncestorElement($('div#app-description-wrapper')[0], selection.baseNode, surroundingElementLookedFor, null);
+                const surroundedByRequestedElement = utils.findAncestorElement($('div#app-description-wrapper')[0], selection.baseNode, surroundingElementLookedFor, null);
 
                 if (surroundedByRequestedElement) {
                     console.log("Requested element for tagName " + surroundingElementLookedFor + ": ", surroundedByRequestedElement);
@@ -97,70 +119,9 @@ $(document).ready(function() {
             }
         });
     }
-    /*
-    [[Range]]
-    collapsed: false
-    commonAncestorContainer: text
-    endContainer: text
-    endOffset: 17
-    startContainer: text
-    startOffset: 8
 
-    [[Selection]]
-    anchorNode: text
-    anchorOffset: 8
-    baseNode: text
-    baseOffset: 8
-    direction: "forward"
-    extentNode: text
-    extentOffset: 17
-    focusNode: text
-    focusOffset: 17
-    isCollapsed: false
-    rangeCount: 1
-    type: "Range"
-    */
-    $(document).on('selectionchange', function(event) {
-        console.log(event);
-          const selection = document.getSelection();
-          const selectionRange = selection.getRangeAt(0);
-          const isWithinContentEditableArea = $(selection.anchorNode).closest('div#app-description').length > 0;
-            // const activeElement = document.activeElement;
-
-            console.log('WITHIN AREA: ', isWithinContentEditableArea);
-            setToolbarActiveButtons($('ul#toolbar-2 button'), selection, selectionRange);
-
-            if (isWithinContentEditableArea) {
-                utils.setStoredSelectedElement(selection.anchorNode);
-            }
-
-            //console.log(selection);
-            //console.log(selectionRange);
-
-        const anchorNodeParentElement = selection.anchorNode.parentElement;
-
-        if (anchorNodeParentElement.tagName.toLowerCase() === 'a') {
-            // Editing a anchor element
-            utils.setStoredSelectedElement(anchorNodeParentElement);
-            utils.activatePanel($('#anchor-element-edit-panel'), $(anchorNodeParentElement));
-
-        } else if (isWithinContentEditableArea) {
-            utils.setStoredSelectedElement(null);
-            utils.hideElement($('#anchor-element-edit-panel'));
-        }
-    }).on('focus', 'div#app-description img', function() {
-        utils.setStoredSelectedElement($(this));
-        utils.activatePanel($('#img-element-edit-panel'), $(this));
-
-    }).on('focus', 'input#link-title, input#link-url', function() {
-        const selectedElement = getStoredSelectedElement();
-        utils.editElement(selectedElement);
-
-    }).on('blur', 'input#link-title, input#link-url', function() {
-        const selectedElement = getStoredSelectedElement();
-        utils.uneditElement(selectedElement);
-
-    }).on('click', 'button.action-format-bold', function() {
+    $(document).on('selectionchange', handleDocumentSelectionChangeEvent)
+    .on('click', 'button.action-format-bold', function() {
         utils.wrapElementWithTag('strong');
 
     }).on('click', 'button.action-format-italic', function() {
@@ -182,20 +143,28 @@ $(document).ready(function() {
         utils.addElementToAppDescription($(document.createElement('pre')).attr({'data-floating-toolbar-name': 'first-floating-toolbar'}).text('Hello world!'));
 
     }).on('click', 'button.action-image', function() {
-        utils.addElementToAppDescription($(document.createElement('img')).attr({'src': 'img/img0.jpg', 'alt': 'Image text', 'tabindex': '0'}));
+        const currentLocale = i18n.getCurrentAppLanguage();
+        const defaultImageAltText = document.app_config.i18nStrings.defaultImageAltText[currentLocale];
+        utils.addElementToAppDescription($(document.createElement('img')).attr({'src': 'img/img0.jpg', 'alt': defaultImageAltText, 'tabindex': '0'}));
 
     }).on('click', 'button.action-table', function() {
-        const list = $(document.createElement('table'));
-        list.append('<tr><td>Item 1, 1</td><td>Item 2, 1</td></tr><tr><td>Item 1, 2</td><td>Item 2, 2</td></tr>');
-        utils.addElementToAppDescription(list);
+        const currentLocale = i18n.getCurrentAppLanguage();
+        const table = $(document.createElement('table'));
+        const tableCaptionTranslation = document.app_config.i18nStrings.tableCaption[currentLocale];
+        const headingTranslation = document.app_config.i18nStrings.values.heading;
+        const cellTranslation = document.app_config.i18nStrings.values.cell;
+        let tableHtml = `<caption>${tableCaptionTranslation}</caption><tr><th>${headingTranslation} 1</th><th>${headingTranslation} 2</th></tr>`;
+        [1, 2].forEach(i => tableHtml += `<tr><td>${cellTranslation} ${i}, 1</td><td>${cellTranslation} ${i}, 2</td></tr>`);
+
+        utils.addElementToAppDescription(table.append(tableHtml));
 
     }).on('click', 'button.action-format-list-bulleted', function() {
-        const list = $(document.createElement('ul'));
+        const list = $('<ul tabindex="0"></ul>');
         list.append('<li>Item 1</li><li>Item 2</li>');
         utils.addElementToAppDescription(list);
 
     }).on('click', 'button.action-format-list-numbered', function() {
-        const list = $(document.createElement('ol'));
+        const list = $('<ol tabindex="0"></ol>');
         list.append('<li>Item 1</li><li>Item 2</li>');
         utils.addElementToAppDescription(list);
 
@@ -204,7 +173,7 @@ $(document).ready(function() {
 
     }).on('click', headingsSelector, function() {
         const headingLevel = 'h' + $(this).attr('class').match(/action-format-h([1-6])/)[1];
-        wrapElementWithTag(headingLevel);
+        utils.wrapElementWithTag(headingLevel);
 
     }).on('mousedown', 'button', function() {
         if (!$(this).hasClass('can-be-toggled')) {
@@ -229,19 +198,24 @@ $(document).ready(function() {
 
         toolbar.addClass('not-displayed').css({'left': '', 'right': '', 'top': ''});
 
-    }).on('input', 'input[data-bind-attribute]', function() {
-        const editedElement = utils.getEditedElement($(this).closest('.edit-panel'));
-        const editedAttribute = $(this).attr('data-bind-attribute');
+    }).on('input', 'input[data-bind-attribute]', (event) => handleEditElementAttributeInput.bind($(this).closest('edit-panel').get())($(event.currentTarget)))
+    .on('change', '#set-list-style-type-list', (event) => handleEditElementAttributeInput.bind($(this).closest('edit-panel').get())($(event.currentTarget), 'text'))
+    .on('click', '.html-list-wrapper', function() {
+        const list = $(this);
+        list.toggleClass('is-open');
 
-        if (editedElement) {
-            $(editedElement).removeClass('update-animation');
-            void editedElement.offsetWidth; // force reflow
-            $(editedElement).addClass('update-animation').attr(editedAttribute, $(this).val());
+/*
+        if (list.hasClass('is-open')) {
+            list.css('height', list.children('.html-list-top-list').outerHeight());
+        } else {
+            list.css('height', '');
         }
+        */
     });
 
     Promise.all($('select#selected-language-list > option').map((index, optionElement) => fetchAllDocumentTranslations($(optionElement).val()))).then(values => {
         console.log('DONE!');
+        document.i18nStrings = values;
     });
 
 });

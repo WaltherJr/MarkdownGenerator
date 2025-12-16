@@ -12,6 +12,7 @@ public final class MaterialIcons {
                         MainToolbar.getToolbarLayout().stream().flatMap(List::stream).map(MainToolbar.ToolbarButton::getCaption),
                         LinkPanel.uiIcons.stream().map(Icon::name),
                         ImagePanel.uiIcons.stream().map(Icon::name),
+                        TablePanel.uiIcons.stream().map(Icon::name),
                         MoveElementPanel.uiIcons.stream().map(Icon::name))
                         .flatMap(Function.identity());
 

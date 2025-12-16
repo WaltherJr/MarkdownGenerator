@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ImagePanel {
     public static List<Icon> uiIcons = List.of(
-        new Icon("text_ad", "Image alternative text", "alt"),
-        new Icon("link", "Image URL", "src"),
-        new Icon("tooltip_2", "Image title", "title")
+        new Icon("text_ad", "Image alternative text", new BindingAttribute("attr", "alt")),
+        new Icon("link", "Image URL", new BindingAttribute("attr", "src")),
+        new Icon("tooltip_2", "Image title", new BindingAttribute("attr", "title"))
     );
 }

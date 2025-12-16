@@ -1,5 +1,5 @@
 # MarkdownGenerator
-An automatic README.md project markdown generator
+A combined WYSIWYG HTML editor/project markdown generator
 
 ### Frontend demo
 https://markdowngenerator-production.up.railway.app

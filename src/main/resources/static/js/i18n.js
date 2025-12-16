@@ -1,4 +1,8 @@
 
+export function getCurrentAppLanguage() {
+    return $('html').attr('lang');
+}
+
 export function getElementI18NAttributeNames(element) {
     return $(element).attr('data-i18n-attribute').split(/,\s*/);
 }

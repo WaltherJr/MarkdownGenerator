@@ -45,28 +45,11 @@ export function setStoredSelectedElement(element) {
     $('div#app-description').data('selectedElement', element);
 }
 
-export function setEditedElement(panel, element) {
-    panel.data('editedElement', element);
+function handleImageOnLoadEvent(imageElement) {
+    $(event.target).css({width: event.target.width + 'px', height: event.target.height + 'px', outline: '2px solid red'});
 
-    if (element.get(0).tagName.toLowerCase() === 'img') {
-        setEditedImageElement(element);
-    }
-}
-
-// TODO: use 2 images (animate width and height)
-setEditedImageElement(imageElement) {
-        imageElement.css({width: imageElement.width() + 'px', height: imageElement.height() + 'px', outline: '2px solid red'});
-        imageElement.off('load');
-        imageElement.get(0).addEventListener('load', function(event) {
-            alert('IMAGE LOAD!');
-            const a = event.target;
-            debugger;
-            $(event.target).css({width: event.target.width + 'px', height: event.target.height + 'px', outline: '2px solid red'});
-        });
-}
-
-export function getEditedElement(panel) {
-    return panel.data('editedElement');
+    console.log('Natural:', img.naturalWidth, img.naturalHeight);
+    console.log('Rendered:', img.clientWidth, img.clientHeight);
 }
 
 export function getStoredSelectedElement() {
@@ -90,21 +73,24 @@ export function uneditElement(element) {
 }
 
 export function showElement(element) {
-    element.removeClass('not-displayed');
+    element.removeClass('not-displayed not-visible');
 }
+
 export function hideElement(element) {
-    element.addClass('not-displayed');
+    element.addClass('not-displayed').addClass('not-visible');
 }
 
-export function activatePanel(panel, editedElement) {
-    setEditedElement(panel, editedElement); // Needs to be called first (img will not set width and height to original image if updating to non-edisting image src)
-    panel.find('[data-bind-attribute]').each(function(index, element) {
-        const databindAttribute = $(element).attr('data-bind-attribute');
-        const val = editedElement.attr(databindAttribute);
-        $(element).val(val);
-    });
+export function findAncestorElement(stopElement, currentElement, tagNameToLookFor, matchingElement) {
+     if (currentElement == stopElement || currentElement == document) {
+        return matchingElement;
 
-    showElement(panel);
+    } else {
+        if (currentElement && currentElement.tagName && currentElement.tagName.toLowerCase() === tagNameToLookFor) {
+            matchingElement = currentElement;
+        }
+
+        return findAncestorElement(stopElement, currentElement.parentElement, tagNameToLookFor, matchingElement);
+    }
 }
 
 export function createSelectorForElement(element, builtSelectorSoFar) {

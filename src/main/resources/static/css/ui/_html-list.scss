@@ -1,0 +1,73 @@
+
+@use '../mixins';
+
+$selected-item-height: 2.8em;
+$list-border-color: gray;
+$list-focused-border-color: dimgray;
+
+div.html-list-wrapper {
+    padding: 0;
+    display: inline-block;
+    height: $selected-item-height;
+    box-sizing: border-box;
+    position: relative;
+    cursor: default;
+
+    &:focus > span {
+        box-shadow: inset 0 0 10px rgba(255,255,255,.4);
+    }
+
+    & > span {
+        display: block;
+        height: inherit;
+        background: yellowgreen;
+        line-height: $selected-item-height;
+        border: 2px solid $list-border-color;
+        border-radius: 7px;
+        padding: 0 10px;
+        box-sizing: border-box;
+        position: relative;
+
+        &::after {
+            @include mixins.material-symbol('\e5c7', 30px);
+            position: absolute;
+            top: 0;
+            right: 5px;
+            color: $list-border-color;
+        }
+    }
+
+    &.is-open {
+        ul.html-list-top-list {
+            display: initial;
+            max-height: 200px;
+        }
+    }
+
+    & > ul.html-list-top-list {
+        position: absolute;
+        left: 0;
+        display: none;
+        top: calc(100% + 3px);
+        background-color: gainsboro;
+        max-height: 0px;
+        transition: max-height 1s ease;
+        overflow-y: scroll;
+        white-space: nowrap;
+        margin: 0;
+        padding: 0;
+        border-radius: 4px;
+        box-shadow: 0 2px 3px rgba(0,0,0,.3), inset 0 0 2px gray;
+        box-sizing: border-box;
+        list-style-position: inside;
+        z-index: 999;
+
+        li.selected-item {
+            background-color: green !important;
+        }
+        & li > ul {
+            padding: 10px 15px !important;
+        }
+
+    }
+}

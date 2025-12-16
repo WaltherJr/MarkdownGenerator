@@ -48,24 +48,28 @@ public class I18NHelper {
     }
 
     public static String buildCapitalizedString(String... words) {
-        return joinStrings(buildWordList(words, true), " ");
+        return joinStrings(buildWordList(LocaleContextHolder.getLocale(), words, true), " ");
     }
 
     public static String buildCapitalizedStringWithoutDelimiter(String... words) {
-        return joinStrings(buildWordList(words, true), "");
+        return joinStrings(buildWordList(LocaleContextHolder.getLocale(), words, true), "");
+    }
+
+    public static String buildLocalizedCapitalizedStringWithoutDelimiter(String languageTag, String... words) {
+        return joinStrings(buildWordList(Locale.forLanguageTag(languageTag), words, true), "");
     }
 
     public static String buildStringWithoutDelimiter(String... words) {
-        return joinStrings(buildWordList(words, false), "");
+        return joinStrings(buildWordList(LocaleContextHolder.getLocale(), words, false), "");
     }
 
-    private static List<String> buildWordList(String[] words, boolean capitalized) {
+    private static List<String> buildWordList(Locale locale, String[] words, boolean capitalized) {
         final Locale currentLocale = LocaleContextHolder.getLocale();
 
         final var wordsTranslated = new java.util.ArrayList<>(Arrays.stream(words).
                 map(word -> {
                     try {
-                        return messageSource.getMessage(word, new Object[]{}, currentLocale);
+                        return messageSource.getMessage(word, new Object[]{}, locale);
 
                     } catch (NoSuchMessageException e) {
                         return word; // Return the word non-translated, as-is

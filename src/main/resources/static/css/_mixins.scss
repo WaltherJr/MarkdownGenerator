@@ -13,6 +13,17 @@ $number-mappings-2: (
   4: four
 );
 
+// Fonts
+$material-outlined-font: 'Material Symbols Outlined', serif;
+
+@mixin material-symbol($glyph, $font-size) {
+  font-family: $material-outlined-font;
+  font-size: $font-size;
+  content: '\e5c5';
+  pointer-events: none;
+  display: block;
+}
+
 @mixin gray-gradient-background {
     background-image: linear-gradient(to bottom, lightgray, darkgray);
 }

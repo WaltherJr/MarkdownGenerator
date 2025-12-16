@@ -2,6 +2,7 @@
 @use 'mixins';
 @use 'ui/flexbox';
 @use 'ui/grid';
+@use 'ui/html-list';
 @use 'ui/buttons';
 
 .toolbar, .toolbar ul {
@@ -17,12 +18,17 @@
 }
 
 .edit-panel {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     box-sizing: border-box;
     background-color: gainsboro;
+    display: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    &.active-panel {
+        display: block;
+    }
 }
 
 #toolbar-2 {
@@ -58,4 +64,18 @@
         height: calc(100% + 2*10px);
         border: 5px solid red;
     }
+}
+
+#edit-panels-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 10vh;
+    right: 20vw;
+    width: 200px;
+    background-color: gainsboro;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+    border: 2px solid gray;
+    border-radius: 7px;
+    z-index: 999;
 }

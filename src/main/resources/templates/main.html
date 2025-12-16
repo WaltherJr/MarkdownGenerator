@@ -14,6 +14,23 @@
     <script th:src="@{/js/main.js}" type="module"></script>
 </head>
 <body>
+    <script th:inline="javascript">
+        if (!document.app_config) {
+            document.app_config = {};
+        }
+
+        document.app_config.i18nStrings = {
+            values: JSON.parse([[${i18nStrings}]]),
+            tableCaption: {
+                'en-US': /*[[${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildLocalizedCapitalizedStringWithoutDelimiter('en-US', 'table', ' ', 'caption')}]]*/,
+                'sv-SE': /*[[${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildLocalizedCapitalizedStringWithoutDelimiter('sv-SE', 'table', 'caption')}]]*/
+            },
+            defaultImageAltText: {
+                'en-US': /*[[${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildLocalizedCapitalizedStringWithoutDelimiter('en-US', 'image', ' ', 'text')}]]*/,
+                'sv-SE': /*[[${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildLocalizedCapitalizedStringWithoutDelimiter('sv-SE', 'image', 'text')}]]*/
+            }
+        }
+    </script>
     <ul id="first-floating-toolbar" class="toolbar floating-toolbar not-displayed">
         <li th:each="moveElementIcon: ${panels.moveElementPanel.panelIcons}"><button><span class="material-symbols-outlined" th:text="${moveElementIcon.name}"></span></button></li>
     </ul>
@@ -35,13 +52,36 @@
                 <p>Hello world!</p>
                 <p contenteditable="true">Another paragraph...</p>
                 <blockquote>This is a blockquote</blockquote>
-                <p><a target="_blank" href="https://en.wikipedia.org/wiki/CSS" contenteditable="true">CSS</a> hello...</p>
+                <p><a target="_blank" href="https://en.wikipedia.org/wiki/CSS">CSS</a> hello...</p>
             </div>
-            <div id="anchor-element-edit-panel" class="edit-panel not-displayed">
-                <label th:each="panelIcon: ${panels.linkPanel.panelIcons}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input th:id="|link-*{panelIcon.bindingAttribute}-input|" th:data-bind-attribute="*{panelIcon.bindingAttribute}" type="text"></label>
-            </div>
-            <div id="img-element-edit-panel" class="edit-panel not-displayed">
-                <label th:each="panelIcon: ${panels.imgPanel.panelIcons}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span><input th:id="|img-*{panelIcon.bindingAttribute}-input|" th:data-bind-attribute="*{panelIcon.bindingAttribute}" type="text"></label>
+            <div id="edit-panels-container">
+                <div id="a-element-edit-panel" class="edit-panel">
+                    <label th:each="panelIcon: ${panels.linkPanel.panelIcons}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span>
+                        <input th:id="|link-*{panelIcon.bindingAttribute.name}-input|" class="data-bind-input" th:data-bind-domain="*{panelIcon.bindingAttribute.domain}" th:data-bind-attribute="*{panelIcon.bindingAttribute.name}" type="text">
+                    </label>
+                    <h3>A...</h3>
+                </div>
+                <div id="img-element-edit-panel" class="edit-panel">
+                    <label th:each="panelIcon: ${panels.imgPanel.panelIcons}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span>
+                        <input th:id="|img-*{panelIcon.bindingAttribute.name}-input|" class="data-bind-input" th:data-bind-domain="*{panelIcon.bindingAttribute.domain}" th:data-bind-attribute="*{panelIcon.bindingAttribute.name}" type="text"></label>
+                    <h3>IMG...</h3>
+                </div>
+                <div id="ul-element-edit-panel" class="edit-panel">
+                    <span th:text="${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildCapitalizedStringWithoutDelimiter('list{2}', ' [locale=en-US]', 'style', ':')}"></span>
+                    <div th:replace="html-list :: html-list('set-ul-list-style-type-list', ${listStyleTypes}, 'css', 'list-style-type', 'Hello...')"></div>
+                    <h3>UL...</h3>
+                </div>
+                <div id="ol-element-edit-panel" class="edit-panel">
+                    <span th:text="${T(com.eriksandsten.markdowngenerator.utils.I18NHelper).buildCapitalizedStringWithoutDelimiter('list{2}', ' [locale=en-US]', 'style', ':')}"></span>
+                    <div th:replace="html-list :: html-list('set-ol-list-style-type-list', ${listStyleTypes}, 'css', 'list-style-type', 'Hello...')"></div>
+                    <h3>OL...</h3>
+                </div>
+                <div id="table-element-edit-panel" class="edit-panel">
+                    <h3>TABLE...</h3>
+                    <label th:each="panelIcon: ${panels.tablePanel.panelIcons}"><span class="material-symbols-outlined" th:title="${panelIcon.title}" th:text="*{panelIcon.name}"></span>
+                        <input th:id="|table-*{panelIcon.bindingAttribute.name}-input|" class="data-bind-input" th:data-bind-domain="*{panelIcon.bindingAttribute.domain}" th:data-bind-attribute="*{panelIcon.bindingAttribute.name}" type="text"></label>
+                    <h3>IMG...</h3>
+                </div>
             </div>
         </div>
 
@@ -66,5 +106,6 @@
             </select>
         </div>
     </div>
-    <div id="generated-markdown"></div>
+    <div id="generated-markdown">
+    </div>
 </body>

@@ -1,5 +1,7 @@
 @use 'mixins';
 
+$table-border: 3px solid gray;
+
 div#app-description {
     min-height: 25vh;
     font-size: 20px;
@@ -10,8 +12,21 @@ div#app-description {
         transition: top 1s ease;
     }
 
-img {
+    img {
         cursor: pointer;
+    }
+
+    table {
+        border: $table-border;
+
+        td, th, caption {
+            border: 1px solid gray;
+            padding: 7px 12px;
+        }
+
+        caption {
+            border: $table-border;
+        }
     }
 }
 

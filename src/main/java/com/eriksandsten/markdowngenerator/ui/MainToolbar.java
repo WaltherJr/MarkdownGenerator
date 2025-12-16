@@ -13,7 +13,8 @@ public final class MainToolbar {
                     new ToolbarButton("image", I18NHelper.buildCapitalizedString("insert", "image"), "image"),
                     new ToolbarButton("table", I18NHelper.buildCapitalizedString("insert", "table"), "table"),
                     new ToolbarButton("format_list_bulleted", I18NHelper.buildCapitalizedString("insert", "unordered", "list"), "ul"),
-                    new ToolbarButton("format_list_numbered", I18NHelper.buildCapitalizedString("insert", "ordered", "list"), "ol")),
+                    new ToolbarButton("format_list_numbered", I18NHelper.buildCapitalizedString("insert", "ordered", "list"), "ol"),
+                    new ToolbarButton("format_list_numbered", I18NHelper.buildCapitalizedString("insert", "hyperlink"), "a")),
             List.of(
                     new ToolbarButton("format_bold", I18NHelper.buildCapitalizedString("make", "text", "bold"), "strong"),
                     new ToolbarButton("format_italic", I18NHelper.buildCapitalizedString("make", "text", "italic"), "i"),

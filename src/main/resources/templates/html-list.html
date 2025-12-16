@@ -1,0 +1,8 @@
+<div th:fragment="html-list(elementId, listData, dataBindDomain, dataBindAttribute, initialValue)">
+    <div th:id="${elementId}" class="html-list-wrapper" th:data-bind-domain="*{dataBindDomain}" th:data-bind-attribute="*{dataBindAttribute}" data-activation-handler="selectLists.onActivationEvent" tabindex="0">
+        <span class="list-selected-item data-bind-input" th:text="*{initialValue}"></span>
+        <ul class="html-list-top-list">
+            <li th:each="listItem : *{listData}"><ul th:style="|list-style-type: *{listItem};|"><li th:text="*{listItem}"></li></ul></li>
+        </ul>
+    </div>
+</div>

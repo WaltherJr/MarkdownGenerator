@@ -10,11 +10,15 @@ import com.eriksandsten.markdowngenerator.github.GitHubService;
 import com.eriksandsten.markdowngenerator.ui.LinkPanel;
 import com.eriksandsten.markdowngenerator.ui.ImagePanel;
 import com.eriksandsten.markdowngenerator.ui.MoveElementPanel;
+import com.eriksandsten.markdowngenerator.ui.TablePanel;
+import com.eriksandsten.markdowngenerator.utils.CSSListStyles;
+import com.eriksandsten.markdowngenerator.utils.I18NHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -31,10 +35,12 @@ public class MainController {
     private String defaultMarkdownFooterText;
 
     private final GradleDetector gradleDetector;
+    private final I18NHelper i18nHelper;
 
     @Autowired
-    public MainController(GradleDetector gradleDetector, GitHubService gitHubService) {
+    public MainController(GradleDetector gradleDetector, I18NHelper i18nHelper, GitHubService gitHubService) {
         this.gradleDetector = gradleDetector;
+        this.i18nHelper = i18nHelper;
     }
 
     Map<Pattern, Supplier<String>> expressionExpansions = Map.of(
@@ -69,10 +75,13 @@ public class MainController {
 
         }
 
+        model.addAttribute("listStyleTypes", CSSListStyles.LIST_STYLE_TYPES);
+        model.addAttribute("i18nStrings", i18nHelper.getAllStrings());
         model.addAttribute("s", s);
         model.addAttribute("panels", Map.of(
                 "linkPanel", Map.of("panelIcons", LinkPanel.uiIcons),
                 "imgPanel", Map.of("panelIcons", ImagePanel.uiIcons),
+                "tablePanel", Map.of("panelIcons", TablePanel.uiIcons),
                 "moveElementPanel", Map.of("panelIcons", MoveElementPanel.uiIcons))
         );
 
